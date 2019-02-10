@@ -13,6 +13,10 @@ AWS.config.update({
 const s3 = new AWS.S3();
 const inputDir = './templates/template-image.png';
 const fontDir = './fonts/Catamaran-Bold.ttf';
+const drawTextPosition = {
+    x: 0,
+    y: 55
+};
 
 // for testing only
 const addTextAndDownloadImg = text => {
@@ -22,21 +26,25 @@ const addTextAndDownloadImg = text => {
         logger.logDebug.debug('[from utils/utils.js] addTextAndDownloadImg()\ntext:', text);
         const fontSize = getFontSizeForText(text);
         const outFile = `${uuidv4()}-${text}.png`;
-        im(inputDir)
-            .fontSize(fontSize)
-            .font(fontDir)
-            .out('-gravity', 'center')
-            .fill('#fff')
-            .drawText(0, 55, text + ".sievehq.com")
-            .write(`./${outFile}`, function (err) {
-                if(err){
-                    logger.logError.error('[from utils/utils.js] addTextAndDownloadImg() im.write()\nError:', err)
-                }
-                else{
-                    logger.logDebug.debug('[from utils/utils.js] addTextAndDownloadImg() im.write()\nFile created')
-                }
-            });
-        return outFile;
+        return new Promise((resolve, reject) => {
+            im(inputDir)
+                .fontSize(fontSize)
+                .font(fontDir)
+                .out('-gravity', 'center')
+                .fill('#fff')
+                .drawText(drawTextPosition.x, drawTextPosition.y, `${text}.sievehq.com`)
+                .write(`./${outFile}`, function (err) {
+                    if(err){
+                        logger.logError.error('[from utils/utils.js] addTextAndDownloadImg() im.write()\nError:', err);
+                        reject('error in file write');
+                        return;
+                    }
+                    else{
+                        logger.logDebug.debug('[from utils/utils.js] addTextAndDownloadImg() im.write()\nFile created');
+                        resolve(outFile);
+                    }
+                });
+        });
     }
     catch (err) {
         logger.logError.error('[from utils/utils.js] addTextAndDownloadImg()\nError:', err);
@@ -60,19 +68,19 @@ const addTextAndUpload = text => {
                 .font(fontDir)
                 .out('-gravity', 'center')
                 .fill('#fff')
-                .drawText(0, 55, text + ".sievehq.com")
+                .drawText(drawTextPosition.x, drawTextPosition.y, `${text}.sievehq.com`)
                 .stream((err, stdout, stderr) => {
-                    stdout.on('error', (err) => {
+                    if(err) {
+                        logger.logError.error('[from utils/utils.js] addTextAndUpload() \nstream error:', err);
+                        reject(err);
+                        return;
+                    }
+
+                    stdout.on('error', err => {
                         logger.logError.error('[from utils/utils.js] addTextAndUpload() \nstdout error:', err);
                         reject(err);
                         return;
                     });
-
-                    if(stderr) {
-                        logger.logError.error('[from utils/utils.js] addTextAndUpload() \nstderr error:', stderr);
-                        reject('Input stream error');
-                        return;
-                    }
                       
                     var data = {
                         Bucket: "sieve-sharable-poster-cdn",

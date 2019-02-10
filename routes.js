@@ -13,25 +13,35 @@ router.get('/', (req, res) => {
 router.post('/download', (req, res) => {
     logger.logInfo.info('[from routes.js] post(/download)\nRequest received');
     logger.logDebug.debug('[from routes.js] post(/download)\nRequest query param:', req.query);
-    const subDomain = req.query.domain;
+    const subDomain = req.query.subdomain;
     if(subDomain) {
-        const output = utils.addTextAndDownloadImg(subDomain);
-        logger.logDebug.debug('[from routes.js] post(/download)\nFile Output:', output);
-        res.send({
-            'result': output + ' file generated'
-        });
+        utils.addTextAndDownloadImg(subDomain)
+            .then(output => {
+                logger.logDebug.debug('[from routes.js] post(/download)\nFile Output:', output);
+                res.send({
+                    'result': output + ' file generated'
+                });
+            })
+            .catch(error => {
+                logger.logError.error('[from routes.js] post(/upload)\n', error);
+                res.status(400).send({
+                    'error': error
+                });
+            })
     }
     else {
         logger.logError.error('[from routes.js] post(/download)\nInvalid query param');
-        res.status(500).send('Invalid query param');
+        res.status(400).send({
+            'error': 'Invalid query param'
+        });
     }
 })
 
 // upload to aws s3 bucket
 router.post('/upload', (req, res) => {
     logger.logInfo.info('[from routes.js] post(/upload)\nRequest received');
-    logger.logDebug.debug('[from routes.js] post(/upload)\nRequest Query:', req.query);
-    const subDomain = req.query.domain;
+    logger.logDebug.debug('[from routes.js] post(/upload)\nRequest query param:', req.query);
+    const subDomain = req.query.subdomain;
     if(subDomain) {
         utils.addTextAndUpload(subDomain)
             .then(result => {
@@ -42,14 +52,16 @@ router.post('/upload', (req, res) => {
             })
             .catch(error => {
                 logger.logError.error('[from routes.js] post(/upload)\n', error);
-                res.status(500).send({
+                res.status(400).send({
                     'error': error
                 });
             })
     }
     else {
         logger.logError.error('[from routes.js] post(/upload)\nInvalid query param');
-        res.status(500).send('Invalid query param');
+        res.status(400).send({
+            'error': 'Invalid query param'
+        });
     }
 })
 
