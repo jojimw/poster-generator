@@ -21,11 +21,10 @@ const drawTextPosition = {
 // for testing only
 const addTextAndDownloadImg = text => {
     try {
-        logger.logAccess.info('[from utils/utils.js] addTextAndDownloadImg()\ntext:', text);
         logger.logInfo.info('[from utils/utils.js] addTextAndDownloadImg()\ntext:', text);
         logger.logDebug.debug('[from utils/utils.js] addTextAndDownloadImg()\ntext:', text);
         const fontSize = getFontSizeForText(text);
-        const outFile = `${uuidv4()}-${text}.png`;
+        const outFile = `${uuidv4()}.png`;
         return new Promise((resolve, reject) => {
             im(inputDir)
                 .fontSize(fontSize)
@@ -55,11 +54,10 @@ const addTextAndDownloadImg = text => {
 // generate poster and upload to aws s3 bucket
 const addTextAndUpload = text => {
     try {
-        logger.logAccess.info('[from utils/utils.js] addTextAndDownloadImg()\ntext:', text);
         logger.logInfo.info('[from utils/utils.js] addTextAndUpload()\ntext:', text);
         logger.logDebug.debug('[from utils/utils.js] addTextAndUpload()\ntext:', text);
         const fontSize = getFontSizeForText(text);
-        const outFile = `${uuidv4()}-${text}.png`;
+        const outFile = `${uuidv4()}.png`;
         logger.logDebug.debug('[from utils/utils.js] addTextAndUpload()\nfontSize:', fontSize, '\noutFile:', outFile);
         
         return new Promise((resolve, reject) => {
@@ -116,7 +114,7 @@ const addTextAndUpload = text => {
 }
 
 // Get font-size for corresponding text
-const getFontSizeForText = text => text.length < 10 ? '40' : text.length < 14 ? '35' : text.length < 18 ? '30' : '25'
+const getFontSizeForText = text => text.length < 10 ? '40' : text.length < 14 ? '35' : text.length < 18 ? '30' : '25';
 
 module.exports = {
     addTextAndDownloadImg,

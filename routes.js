@@ -12,6 +12,7 @@ router.get('/', (req, res) => {
 // for testing only
 router.post('/download', (req, res) => {
     logger.logInfo.info('[from routes.js] post(/download)\nRequest received');
+    logger.logAccess.info('[from routes.js] post(/download)\nRequest query param:', req.query);
     logger.logDebug.debug('[from routes.js] post(/download)\nRequest query param:', req.query);
     const subDomain = req.query.subdomain;
     if(subDomain) {
@@ -40,6 +41,7 @@ router.post('/download', (req, res) => {
 // upload to aws s3 bucket
 router.post('/upload', (req, res) => {
     logger.logInfo.info('[from routes.js] post(/upload)\nRequest received');
+    logger.logAccess.info('[from routes.js] post(/upload)\nRequest query param:', req.query);
     logger.logDebug.debug('[from routes.js] post(/upload)\nRequest query param:', req.query);
     const subDomain = req.query.subdomain;
     if(subDomain) {
