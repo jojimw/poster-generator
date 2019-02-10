@@ -1,0 +1,21 @@
+{
+  "name": "poster-genertor",
+  "version": "1.0.0",
+  "description": "Generate poster for subdomain",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "joji",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.397.0",
+    "body-parser": "^1.18.3",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "gm": "^1.23.1",
+    "mime": "^2.4.0",
+    "uuid": "^3.3.2"
+  }
+}
