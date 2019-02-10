@@ -64,13 +64,13 @@ const addTextAndUpload = text => {
                 .stream((err, stdout, stderr) => {
                     stdout.on('error', (err) => {
                         logger.logError.error('[from utils/utils.js] addTextAndUpload() \nstdout error:', err);
-                        reject('Error: ' + err);
+                        reject(err);
                         return;
                     });
 
                     if(stderr) {
                         logger.logError.error('[from utils/utils.js] addTextAndUpload() \nstderr error:', stderr);
-                        reject('Error: Input stream error');
+                        reject('Input stream error');
                         return;
                     }
                       
@@ -85,7 +85,7 @@ const addTextAndUpload = text => {
                     s3.upload(data, (err, res) => {
                         if (err) {
                             logger.logError.error('[from utils/utils.js] addTextAndUpload() \ns3 upload error:', err);
-                            reject("Error: " + err);
+                            reject(err);
                             return;
                         }
                         

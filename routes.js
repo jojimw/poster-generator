@@ -6,7 +6,7 @@ const logger = require('./utils/logger');
 
 // for testing only
 router.get('/', (req, res) => {
-    res.send('SERVER RUNNIG :)');
+    res.send('SERVER RUNNING :)');
 });
 
 // for testing only
@@ -40,9 +40,11 @@ router.post('/upload', (req, res) => {
                     'result': result
                 })
             })
-            .catch(err => {
-                logger.logError.error('[from routes.js] post(/upload)\n', err);
-                res.status(500).send(err);
+            .catch(error => {
+                logger.logError.error('[from routes.js] post(/upload)\n', error);
+                res.status(500).send({
+                    'error': error
+                });
             })
     }
     else {
