@@ -25,16 +25,12 @@ router.post('/download', (req, res) => {
             })
             .catch(error => {
                 logger.logError.error('[from routes.js] post(/upload)\n', error);
-                res.status(400).send({
-                    'error': error
-                });
+                res.status(500).send(error);
             })
     }
     else {
         logger.logError.error('[from routes.js] post(/download)\nInvalid query param');
-        res.status(400).send({
-            'error': 'Invalid query param'
-        });
+        res.status(500).send('Invalid query param');
     }
 })
 
@@ -48,22 +44,16 @@ router.post('/upload', (req, res) => {
         utils.addTextAndUpload(subDomain)
             .then(result => {
                 logger.logDebug.debug('[from routes.js] post(/upload)\nResult:', result); 
-                res.send({
-                    'result': result
-                })
+                res.send(result)
             })
             .catch(error => {
                 logger.logError.error('[from routes.js] post(/upload)\n', error);
-                res.status(400).send({
-                    'error': error
-                });
+                res.status(500).send(error);
             })
     }
     else {
         logger.logError.error('[from routes.js] post(/upload)\nInvalid query param');
-        res.status(400).send({
-            'error': 'Invalid query param'
-        });
+        res.status(500).send('Invalid query param');
     }
 })
 
