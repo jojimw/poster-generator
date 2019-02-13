@@ -24,7 +24,7 @@ const addTextAndDownloadImg = text => {
         logger.logInfo.info('[from utils/utils.js] addTextAndDownloadImg()\ntext:', text);
         logger.logDebug.debug('[from utils/utils.js] addTextAndDownloadImg()\ntext:', text);
         const fontSize = getFontSizeForText(text);
-        const outFile = `${uuidv4()}.png`;
+        const outFile = `${text}.png`;
         return new Promise((resolve, reject) => {
             im(inputDir)
                 .fontSize(fontSize)
@@ -57,7 +57,7 @@ const addTextAndUpload = text => {
         logger.logInfo.info('[from utils/utils.js] addTextAndUpload()\ntext:', text);
         logger.logDebug.debug('[from utils/utils.js] addTextAndUpload()\ntext:', text);
         const fontSize = getFontSizeForText(text);
-        const outFile = `${uuidv4()}.png`;
+        const outFile = `${text}.png`;
         logger.logDebug.debug('[from utils/utils.js] addTextAndUpload()\nfontSize:', fontSize, '\noutFile:', outFile);
         
         return new Promise((resolve, reject) => {
@@ -100,7 +100,6 @@ const addTextAndUpload = text => {
                             logger.logDebug.debug('[from utils/utils.js] addTextAndUpload() \ns3 upload response:', res);
                             resolve({
                                 "uploadLink": res.Location,
-                                "fileName": outFile
                             });
                         }
                     });
